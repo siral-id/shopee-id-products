@@ -1,5 +1,6 @@
 import { ITrend } from "./interfaces.ts";
 import { appendJSON } from "./utility.ts";
+import { readJSON} from "https://deno.land/x/flat/mod.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
 const trends: ITrend[] = await readJSON(filename);
@@ -24,4 +25,4 @@ const currentTrends = [
   ...new Map(trendingInLast24Hour.map((item) => [item[key], item])).values(),
 ];
 
-await appendJSON<ITrend>(filename, currentTrends);
+await appendJSON<ITrend>("keywords.json", currentTrends);

@@ -25,7 +25,7 @@ jobs:
         uses: githubocto/flat@v3
         with:
           http_url: https://raw.githubusercontent.com/siral-id/shopee-id-trends/main/shopee_trends.json
-          downloaded_filename: keywords.json
+          downloaded_filename: shopee_trends.json
           postprocess: trends-to-keywords.ts
 
       - name: Fetch All Daily Products
