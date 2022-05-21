@@ -1,19 +1,22 @@
-import { readJSON, writeJSON } from "https://deno.land/x/flat/mod.ts";
-import { IShopeeProductResponse } from "./interfaces.ts";
+import { IShopeeProduct, IShopeeProductResponse } from "./interfaces.ts";
+import { appendJSON, sleep } from "./utility.ts";
 
-const filename = Deno.args[0]; // Same name as downloaded_filename
-const response: IShopeeProductResponse = await readJSON(filename);
+const noOfPages = 10;
+const sleepDuration = 1;
+const filepath = "shopee_products.json";
 
-if (response["error"] !== 0) {
-  console.log("Error", response["error"]);
-}
+const offsets = Array.from(Array(noOfPages).keys());
 
-const section = response["data"]["sections"][0];
-const currentProducts = section["data"]["item"];
+await Promise.all(offsets.map(async (offset) => {
+  const url =
+    `https://shopee.co.id/api/v4/recommend/recommend?bundle=daily_discover_main&item_card=3&limit=60&offset=${offset}`;
+  const response = await fetch(url);
+  const data: IShopeeProductResponse = await response.json();
 
-const output = `shopee_products.json`;
-const existingProducts = await readJSON(output);
+  const section = data["data"]["sections"][0];
+  const products = section["data"]["item"];
 
-const products = existingProducts.concat(currentProducts);
-
-await writeJSON(output, products);
+  // prevent hammering the api source
+  await sleep(sleepDuration);
+  await appendJSON<IShopeeProduct>(filepath, products);
+}));

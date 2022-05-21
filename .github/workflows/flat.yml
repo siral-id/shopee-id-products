@@ -28,9 +28,12 @@ jobs:
           downloaded_filename: keywords.json
           postprocess: trends-to-keywords.ts
 
-      - name: Fetch Shopee Daily Recommended Product
-        uses: githubocto/flat@v3
+      - name: Fetch All Daily Products
+        run: deno run -A --unstable daily-products.ts
+
+      - name: Commit & Push changes
+        uses: actions-js/push@master
         with:
-          http_url: https://shopee.co.id/api/v4/recommend/recommend?bundle=daily_discover_main&item_card=3&limit=60&offset=0
-          downloaded_filename: products.json
-          postprocess: daily-products.ts
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: main
+          force: true

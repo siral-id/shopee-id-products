@@ -220,7 +220,7 @@ export interface IShopeeProductDataSectionDataTopProduct {
 }
 
 export interface IShopeeProductDataSectionData {
-  item?: IShopeeProduct;
+  item: IShopeeProduct[];
   keyword: string[];
   ads?: string;
   top_product: IShopeeProductDataSectionDataTopProduct[];
