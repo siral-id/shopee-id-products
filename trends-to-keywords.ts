@@ -1,5 +1,5 @@
 import { readJSON, writeJSON } from "https://deno.land/x/flat/mod.ts";
-import { ITrend } from "../interfaces.ts";
+import { ITrend } from "./interfaces.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
 const trends: ITrend[] = await readJSON(filename);

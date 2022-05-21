@@ -1,5 +1,5 @@
 import { readJSON, writeJSON } from "https://deno.land/x/flat/mod.ts";
-import { IShopeeProductResponse } from "../interfaces.ts";
+import { IShopeeProductResponse } from "./interfaces.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
 const response: IShopeeProductResponse = await readJSON(filename);
