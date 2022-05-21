@@ -2,6 +2,7 @@ import { readJSON, writeJSON } from "https://deno.land/x/flat/mod.ts";
 import { ITrend } from "./interfaces.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
+console.log(Deno.args[0])
 const trends: ITrend[] = await readJSON(filename);
 
 // get trending in last 24 hours
