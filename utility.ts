@@ -23,7 +23,7 @@ export async function appendJSON<T>(filepath: string, data: T[]) {
 export async function readOrExit<T>(filepath: string): Promise<T> {
   const isExist = existsSync(filepath);
   if (!isExist) {
-    Deno.exit();
+    Deno.exit(0);
   }
 
   return await readJSON(filepath);
