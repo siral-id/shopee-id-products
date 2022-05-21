@@ -2,7 +2,6 @@ import { readJSON, writeJSON } from "https://deno.land/x/flat/mod.ts";
 import { ITrend } from "./interfaces.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
-console.log(Deno.args[0])
 const trends: ITrend[] = await readJSON(filename);
 
 // get trending in last 24 hours
@@ -25,9 +24,8 @@ const currentTrends = [
   ...new Map(trendingInLast24Hour.map((item) => [item[key], item])).values(),
 ];
 
-const output = `shopee_trending_keywords.json`;
-const existingKeywords: ITrend[] = await readJSON(output);
+const existingKeywords: ITrend[] = await readJSON(filename);
 
 const keywords = existingKeywords.concat(currentTrends);
 
-await writeJSON(output, keywords);
+await writeJSON(filename, keywords);
