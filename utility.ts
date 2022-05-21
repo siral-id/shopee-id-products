@@ -6,6 +6,8 @@ export function sleep(seconds: number) {
 
 export async function appendJSON<T>(filepath: string, data: T[]) {
   const currentData = await readJSON(filepath);
-  const combinedData = currentData.concat(data);
+  const combinedData: T[] = currentData.concat(data);
+  const timestamp = new Date().toISOString();
+  combinedData.map((obj) => ({ ...obj, timestamp }));
   await writeJSON(filepath, combinedData);
 }
