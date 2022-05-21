@@ -28,6 +28,18 @@ jobs:
           downloaded_filename: shopee_trends.json
           postprocess: trends-to-keywords.ts
 
+  postprocess:
+    runs-on: ubuntu-latest
+    needs: scheduled
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
       - name: Fetch All Daily Products
         run: deno run -A --unstable daily-products.ts
 
