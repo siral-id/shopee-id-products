@@ -32,5 +32,5 @@ jobs:
         uses: githubocto/flat@v3
         with:
           http_url: https://shopee.co.id/api/v4/recommend/recommend?bundle=daily_discover_main&item_card=3&limit=60&offset=0
-          downloaded_filename: shopee_products.json
+          downloaded_filename: products.json
           postprocess: daily-products.ts
