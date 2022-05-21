@@ -12,8 +12,8 @@ const section = response["data"]["sections"][0];
 const currentProducts = section["data"]["item"];
 
 const output = `shopee_products.json`;
-//const existingProducts = await readJSON(output);
+const existingProducts = await readJSON(output);
 
-//const products = existingProducts.concat(currentProducts);
+const products = existingProducts.concat(currentProducts);
 
-await writeJSON(output, currentProducts);
+await writeJSON(output, products);
