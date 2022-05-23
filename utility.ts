@@ -22,9 +22,12 @@ export async function appendJSON<T>(filepath: string, data: T[]) {
 
 export async function readOrExit<T>(filepath: string): Promise<T> {
   const isExist = existsSync(filepath);
+  console.log("here...")
+  console.log(isExist)
   if (!isExist) {
     Deno.exit(0);
   }
+  console.log("here2...")
 
   return await readJSON(filepath);
 }
