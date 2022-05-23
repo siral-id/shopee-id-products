@@ -1,5 +1,5 @@
 import { ITrend } from "./interfaces.ts";
-import { appendJSON, readOrExit } from "./utility.ts";
+import { appendJSON, readOrExit } from "https://raw.githubusercontent.com/siral-id/deno-utility/main/utility.ts";
 
 const filename = Deno.args[0]; // Same name as downloaded_filename
 const trends: ITrend[] = await readOrExit(filename);
@@ -23,5 +23,6 @@ const key = "keyword";
 const currentTrends = [
   ...new Map(trendingInLast24Hour.map((item) => [item[key], item])).values(),
 ];
+console.log(`received keyword: ${currentTrends.length}`)
 
 await appendJSON<ITrend>("keywords.json", currentTrends);

@@ -1,5 +1,5 @@
 import { IShopeeProduct, IShopeeProductResponse } from "./interfaces.ts";
-import { appendJSON, sleep } from "./utility.ts";
+import { appendJSON, sleep } from "https://raw.githubusercontent.com/siral-id/deno-utility/main/utility.ts";
 
 const noOfPages = 10;
 const sleepDuration = 1;
