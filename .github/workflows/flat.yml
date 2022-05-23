@@ -27,6 +27,7 @@ jobs:
           http_url: https://raw.githubusercontent.com/siral-id/shopee-id-trends/main/shopee_trends.json
           downloaded_filename: shopee_trends.json
           postprocess: trends-to-keywords.ts
+          mask: true
 
   postprocess:
     runs-on: ubuntu-latest
