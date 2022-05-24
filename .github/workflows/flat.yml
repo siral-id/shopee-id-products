@@ -9,9 +9,8 @@ on:
     - cron: "*/5 * * * *"
 
 jobs:
-  execute:
+  scheduled:
     runs-on: ubuntu-latest
-    needs: scheduled
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
