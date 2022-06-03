@@ -16,10 +16,10 @@ const mongoUri = Deno.env.get("MONGO_URI");
 if (!mongoUri) throw new Error("MONGO_URI not found");
 
 const client = await getMongoClient(mongoUri);
-const trends = client.database().collection<ITrendSchema>("trends");
-const products = client.database().collection<IShopeeProductSchema>("products");
+const trendCollection = client.database().collection<ITrendSchema>("trends");
+const productCollection = client.database().collection<IShopeeProductSchema>("products");
 
-const uniqueKeywords: ITrendSchema[] = await trends.distinct("keyword");
+const uniqueKeywords: ITrendSchema[] = await trendCollection.distinct("keyword");
 
 await Promise.all(uniqueKeywords.map(async (keyword) => {
   let isThereNextSearch = true;
@@ -34,12 +34,10 @@ await Promise.all(uniqueKeywords.map(async (keyword) => {
     const data: IShopeeSearchResponse = await response.json();
 
     const items = data["items"];
-    await Promise.all(
-      items.map(async ({ item_basic }) => {
-        await products.insertOne({ ...item_basic, source: "SHOPEE" });
-        return item_basic;
-      }),
-    );
+    const productsWithSource = items.map(({ item_basic }) => ({
+      ...item_basic, source: "SHOPEE"
+    }))
+    await productCollection.insertMany(productsWithSource)
 
     isThereNextSearch = data["nomore"];
     offset += limit;

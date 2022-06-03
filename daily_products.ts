@@ -14,7 +14,7 @@ const mongoUri = Deno.env.get("MONGO_URI");
 if (!mongoUri) throw new Error("MONGO_URI not found");
 
 const client = await getMongoClient(mongoUri);
-const collection = client.database().collection<IShopeeProductSchema>(
+const productCollection = client.database().collection<IShopeeProductSchema>(
   "products",
 );
 
@@ -33,7 +33,7 @@ await Promise.all(offsets.map(async (offset) => {
     ...product,
     source: "SHOPEE",
   }));
-  await collection.insertMany(productsWithSource);
+  await productCollection.insertMany(productsWithSource);
 
   // prevent hammering the api source
   await sleep(sleepDuration);
