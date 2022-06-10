@@ -5,7 +5,7 @@ import {
   setupOctokit,
   sleep,
   upload,
-} from "https://raw.githubusercontent.com/siral-id/core/feat/add-throttlin/mod.ts";
+} from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
 const ghToken = Deno.env.get("GH_TOKEN");
 
