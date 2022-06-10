@@ -10,25 +10,6 @@ on:
     - cron: '0 9 * * *'
 
 jobs:
-  trends_product:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.22.x
-
-      - name: Check out repo
-        uses: actions/checkout@v2
-
-      - name: Fetch Trends To Keywords Shopee Products
-        run: |
-           echo MONGO_URI=$MONGO_URI >> .env
-           export $(cat .env | xargs)
-           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable product_trends.ts
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-
   daily_products:
     runs-on: ubuntu-latest
     steps:
@@ -42,8 +23,8 @@ jobs:
 
       - name: Fetch Daily Shopee Products
         run: |
-           echo MONGO_URI=$MONGO_URI >> .env
+           echo GH_TOKEN=$GH_TOKEN >> .env
            export $(cat .env | xargs)
-           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable daily_products.ts
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts
         env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
