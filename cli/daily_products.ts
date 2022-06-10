@@ -1,5 +1,6 @@
 import { fetchDailyProducts } from "../mod.ts";
 import {
+  chunkItems,
   ICreateProductWithImages,
   setupOctokit,
   upload,
@@ -10,10 +11,14 @@ const octokit = setupOctokit(ghToken);
 
 const response = await fetchDailyProducts();
 
-await upload<ICreateProductWithImages[]>(
-  octokit,
-  response,
-  "WRITE_SHOPEE_PRODUCTS",
+await Promise.all(
+  chunkItems(response).map((chunk) => {
+    await upload<ICreateProductWithImages[]>(
+      octokit,
+      chunk,
+      "WRITE_SHOPEE_PRODUCTS",
+    );
+  }),
 );
 
 Deno.exit();
