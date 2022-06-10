@@ -12,7 +12,7 @@ const octokit = setupOctokit(ghToken);
 const response = await fetchDailyProducts();
 
 await Promise.all(
-  chunkItems(response).map((chunk) => {
+  chunkItems(response).map(async (chunk) => {
     await upload<ICreateProductWithImages[]>(
       octokit,
       chunk,
