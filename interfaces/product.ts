@@ -269,7 +269,13 @@ export interface IShopeeProductResponse {
   data: IShopeeProductData;
 }
 
-export interface IShopeeProductSchema extends IShopeeProduct{
+export interface IShopeeProductSchema extends IShopeeProduct {
   _id: Bson.ObjectId;
   source: string;
+}
+
+export interface IShopeeGetProductResponse {
+  error?: number;
+  error_msg?: string;
+  data: IShopeeProduct;
 }

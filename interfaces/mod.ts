@@ -1,2 +1,2 @@
-export * from "./product.ts"
-export * from "./search.ts"
+export * from "./product.ts";
+export * from "./search.ts";
