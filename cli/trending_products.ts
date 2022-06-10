@@ -1,4 +1,4 @@
-import { pullDailyProducts } from "./mod.ts";
+import { fetchDailyProducts } from "../mod.ts";
 import {
   ICreateProductWithImages,
   setupOctokit,
@@ -11,7 +11,7 @@ const octokit = setupOctokit(ghToken);
 const rawJson = Deno.args[0];
 const uniqueKeywords: string[] = JSON.parse(rawJson);
 
-const response = await pullDailyProducts(uniqueKeywords);
+const response = await fetchDailyProducts(uniqueKeywords);
 
 await upload<ICreateProductWithImages[]>(
   octokit,
