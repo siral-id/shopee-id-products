@@ -17,6 +17,8 @@ await Promise.all(
       octokit,
       chunk,
       "WRITE_PRODUCTS_SHOPEE",
+      "core",
+      1 // seconds
     );
   }),
 );
