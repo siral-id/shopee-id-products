@@ -43,11 +43,12 @@ export async function fetchDailyProducts(
             stock,
           },
         ) => {
-          let { data: { description, view_count } } =
-            await getShopeeProductDetail({
-              itemid,
-              shopid,
-            });
+          const { data } = await getShopeeProductDetail({
+            itemid,
+            shopid,
+          });
+          console.log(data);
+          let { description, view_count } = data;
 
           if (!description) description = "";
           if (!view_count) view_count = 0;
