@@ -40,16 +40,17 @@ export async function fetchDailyProducts(
             item_rating: { rating_star, rating_count },
             historical_sold,
             sold,
-            view_count,
             stock,
           },
         ) => {
-          let { data: { description } } = await getShopeeProductDetail({
-            itemid,
-            shopid,
-          });
+          let { data: { description, view_count } } =
+            await getShopeeProductDetail({
+              itemid,
+              shopid,
+            });
 
           if (!description) description = "";
+          if (!view_count) view_count = 0;
 
           // prevent hammering the api source
           await sleep(sleepDuration);
@@ -118,17 +119,18 @@ export async function fetchProductsFromTrends(
                 item_rating: { rating_star, rating_count },
                 historical_sold,
                 sold,
-                view_count,
                 stock,
               },
             },
           ) => {
-            let { data: { description } } = await getShopeeProductDetail({
-              itemid,
-              shopid,
-            });
+            let { data: { description, view_count } } =
+              await getShopeeProductDetail({
+                itemid,
+                shopid,
+              });
 
             if (!description) description = "";
+            if (!view_count) view_count = 0;
 
             // prevent hammering the api source
             await sleep(sleepDuration);
