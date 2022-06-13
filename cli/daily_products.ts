@@ -11,6 +11,7 @@ const ghToken = Deno.env.get("GH_TOKEN");
 
 const octokit = setupOctokit(ghToken);
 
+const noOfPages = 10;
 const offsets = Array.from(Array(noOfPages).keys());
 
 await Promise.all(offsets.map(async (offset) => {
