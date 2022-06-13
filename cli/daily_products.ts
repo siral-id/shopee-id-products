@@ -11,16 +11,20 @@ const ghToken = Deno.env.get("GH_TOKEN");
 
 const octokit = setupOctokit(ghToken);
 
-const response = await fetchDailyProducts();
+const offsets = Array.from(Array(noOfPages).keys());
 
-await Promise.all(
-  chunkItems(response).map(async (chunk) =>
-    await uploadWithRetry<ICreateProductWithImages[]>(
-      octokit,
-      chunk,
-      Pipeline.ShopeeTrends,
-    )
-  ),
-);
+await Promise.all(offsets.map(async (offset) => {
+  const response = await fetchDailyProducts(offset);
+
+  await Promise.all(
+    chunkItems(response).map(async (chunk) =>
+      await uploadWithRetry<ICreateProductWithImages[]>(
+        octokit,
+        chunk,
+        Pipeline.ShopeeProducts,
+      )
+    ),
+  );
+}));
 
 Deno.exit();

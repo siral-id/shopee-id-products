@@ -56,7 +56,7 @@ Deno.test("Make sure fetchProductsFromTrends is correct", async () => {
     ]),
   );
 
-  const response = await fetchProductsFromTrends(["keyword"]);
+  const response = await fetchProductsFromTrends("keyword");
 
   expect(response[0]).to.have.property("externalId");
 
