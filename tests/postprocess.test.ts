@@ -12,11 +12,13 @@ import {
   fetchProductsFromTrends,
 } from "../mod.ts";
 import {
-  generateResponse,
   SHOPEE_GET_PRODUCT_RECOMMENDATION_RESPONS,
   SHOPEE_GET_PRODUCT_RESPONSE,
   SHOPEE_GET_PRODUCT_SEARCH_RESPONSE,
 } from "./mod.ts";
+import {
+  generateResponse
+} from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
 Deno.test("Make sure fetchDailyProducts is correct", async () => {
   const expect = chai.expect;

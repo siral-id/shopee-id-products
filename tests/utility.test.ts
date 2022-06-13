@@ -14,7 +14,10 @@ import {
   generateShopeeProductUrl,
   getShopeeProductDetail,
 } from "../mod.ts";
-import { generateResponse, SHOPEE_GET_PRODUCT_RESPONSE } from "./mod.ts";
+import { SHOPEE_GET_PRODUCT_RESPONSE } from "./mod.ts";
+import {
+  generateResponse
+} from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
 Deno.test("Make sure generateShopeeProductUrl is correct", () => {
   assertEquals(
