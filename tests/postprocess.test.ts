@@ -4,12 +4,15 @@ import {
   returnsNext,
   stub,
 } from "https://deno.land/std@0.142.0/testing/mock.ts";
+import {
+  assertObjectMatch,
+} from "https://deno.land/std@0.142.0/testing/asserts.ts";
 
 import {
-  _postProcessInternals,
-  _utilityInternals,
+  _internals,
   fetchDailyProducts,
   fetchProductsFromTrends,
+  fetchShopeeProductDetail,
 } from "../mod.ts";
 import {
   SHOPEE_GET_PRODUCT_RECOMMENDATION_RESPONS,
@@ -17,24 +20,17 @@ import {
   SHOPEE_GET_PRODUCT_SEARCH_RESPONSE,
 } from "./mod.ts";
 import {
-  generateResponse
+  generateResponse,
 } from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
 Deno.test("Make sure fetchDailyProducts is correct", async () => {
   const expect = chai.expect;
 
-  const stubPostprocessFetch = stub(
-    _postProcessInternals,
+  const stubFetch = stub(
+    _internals,
     "fetch",
     returnsNext([
       generateResponse(SHOPEE_GET_PRODUCT_RECOMMENDATION_RESPONS),
-    ]),
-  );
-
-  const stubUtilityFetch = stub(
-    _utilityInternals,
-    "fetch",
-    returnsNext([
       generateResponse(SHOPEE_GET_PRODUCT_RESPONSE),
     ]),
   );
@@ -43,28 +39,19 @@ Deno.test("Make sure fetchDailyProducts is correct", async () => {
 
   expect(response[0]).to.have.property("externalId");
 
-  assertSpyCalls(stubPostprocessFetch, 1);
-  assertSpyCalls(stubUtilityFetch, 1);
+  assertSpyCalls(stubFetch, 2);
 
-  stubPostprocessFetch.restore();
-  stubUtilityFetch.restore();
+  stubFetch.restore();
 });
 
 Deno.test("Make sure fetchProductsFromTrends is correct", async () => {
   const expect = chai.expect;
 
-  const stubPostprocessFetch = stub(
-    _postProcessInternals,
+  const stubFetch = stub(
+    _internals,
     "fetch",
     returnsNext([
       generateResponse(SHOPEE_GET_PRODUCT_SEARCH_RESPONSE),
-    ]),
-  );
-
-  const stubUtilityFetch = stub(
-    _utilityInternals,
-    "fetch",
-    returnsNext([
       generateResponse(SHOPEE_GET_PRODUCT_RESPONSE),
     ]),
   );
@@ -73,9 +60,24 @@ Deno.test("Make sure fetchProductsFromTrends is correct", async () => {
 
   expect(response[0]).to.have.property("externalId");
 
-  assertSpyCalls(stubPostprocessFetch, 1);
-  assertSpyCalls(stubUtilityFetch, 1);
+  assertSpyCalls(stubFetch, 2);
 
-  stubPostprocessFetch.restore();
-  stubUtilityFetch.restore();
+  stubFetch.restore();
+});
+
+Deno.test("Make sure fetchShopeeProductDetail is correct", async () => {
+  const stubFetch = stub(
+    _internals,
+    "fetch",
+    returnsNext([
+      generateResponse(SHOPEE_GET_PRODUCT_RESPONSE),
+    ]),
+  );
+
+  assertObjectMatch(
+    await fetchShopeeProductDetail({ itemid: 1, shopid: 1 }),
+    SHOPEE_GET_PRODUCT_RESPONSE,
+  );
+
+  assertSpyCalls(stubFetch, 1);
 });

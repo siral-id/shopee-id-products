@@ -2,8 +2,8 @@ import { fetchDailyProducts } from "../mod.ts";
 import {
   chunkItems,
   ICreateProductWithImages,
-  setupOctokit,
   Pipeline,
+  setupOctokit,
   uploadWithRetry,
 } from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
@@ -15,7 +15,11 @@ const response = await fetchDailyProducts();
 
 await Promise.all(
   chunkItems(response).map(async (chunk) =>
-    await uploadWithRetry<ICreateProductWithImages[]>(octokit, chunk, Pipeline.ShopeeTrends)
+    await uploadWithRetry<ICreateProductWithImages[]>(
+      octokit,
+      chunk,
+      Pipeline.ShopeeTrends,
+    )
   ),
 );
 

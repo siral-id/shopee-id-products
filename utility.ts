@@ -1,5 +1,3 @@
-import { IShopeeGetProductResponse } from "./mod.ts";
-
 export interface IGenerateShopeeProductUrl {
   name: string;
   itemid: number;
@@ -26,14 +24,3 @@ export function generateShopeeProductImageUrl(
 ): string {
   return `https://cf.shopee.co.id/file/${image}`;
 }
-
-export async function getShopeeProductDetail(
-  { itemid, shopid }: IGetShopeeProductDetail,
-): Promise<IShopeeGetProductResponse> {
-  const productUrl =
-    `https://shopee.co.id/api/v4/item/get?itemid=${itemid}&shopid=${shopid}`;
-  const productResponse = await _utilityInternals.fetch(productUrl);
-  return await productResponse.json();
-}
-
-export const _utilityInternals = { fetch };

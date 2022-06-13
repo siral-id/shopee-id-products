@@ -1,7 +1,8 @@
 import {
   generateShopeeProductImageUrl,
   generateShopeeProductUrl,
-  getShopeeProductDetail,
+  IGetShopeeProductDetail,
+  IShopeeGetProductResponse,
   IShopeeProductResponse,
   IShopeeSearchResponse,
 } from "./mod.ts";
@@ -11,9 +12,37 @@ import {
   Source,
 } from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
+const fetchWithRetry = async <T>(
+  url: string,
+  requestOptions?: RequestInit,
+  retryCount = 0,
+  maxRetry = 60,
+  lastError?: string,
+): Promise<T> => {
+  if (retryCount > maxRetry) throw new Error(lastError);
+  try {
+    const response = await _internals.fetch(
+      url,
+      requestOptions,
+    );
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    await sleep(retryCount);
+    return fetchWithRetry(url, requestOptions, retryCount + 1, error);
+  }
+};
+
+export function fetchShopeeProductDetail(
+  { itemid, shopid }: IGetShopeeProductDetail,
+): Promise<IShopeeGetProductResponse> {
+  const productUrl =
+    `https://shopee.co.id/api/v4/item/get?itemid=${itemid}&shopid=${shopid}`;
+  return fetchWithRetry<IShopeeGetProductResponse>(productUrl);
+}
+
 export async function fetchDailyProducts(
   noOfPages = 10,
-  sleepDuration = 0.1,
 ): Promise<ICreateProductWithImages[]> {
   const offsets = Array.from(Array(noOfPages).keys());
   const serializedProducts: ICreateProductWithImages[] = [];
@@ -21,8 +50,7 @@ export async function fetchDailyProducts(
   await Promise.all(offsets.map(async (offset) => {
     const url =
       `https://shopee.co.id/api/v4/recommend/recommend?bundle=daily_discover_main&item_card=${offset}&limit=60&offset=${offset}`;
-    const response = await _postProcessInternals.fetch(url);
-    const data: IShopeeProductResponse = await response.json();
+    const data = await fetchWithRetry<IShopeeProductResponse>(url);
 
     const section = data["data"]["sections"][0];
     const products = section["data"]["item"];
@@ -43,7 +71,7 @@ export async function fetchDailyProducts(
             stock,
           },
         ) => {
-          const { data } = await getShopeeProductDetail({
+          const { data } = await fetchShopeeProductDetail({
             itemid,
             shopid,
           });
@@ -52,9 +80,6 @@ export async function fetchDailyProducts(
 
           if (!description) description = "";
           if (!view_count) view_count = 0;
-
-          // prevent hammering the api source
-          await sleep(sleepDuration);
 
           const nameWithDash = name.replace(" ", "-");
           const url = generateShopeeProductUrl({
@@ -102,10 +127,9 @@ export async function fetchProductsFromTrends(
       const url =
         `https://shopee.co.id/api/v4/search/search_items?by=relevancy&keyword=${keyword}&limit=${limit}&newest=${offset}&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
 
-      const response = await _postProcessInternals.fetch(url);
-      const data: IShopeeSearchResponse = await response.json();
-
+      const data = await fetchWithRetry<IShopeeSearchResponse>(url);
       const items = data["items"];
+
       await Promise.all(
         items.map(
           async (
@@ -125,7 +149,7 @@ export async function fetchProductsFromTrends(
             },
           ) => {
             let { data: { description, view_count } } =
-              await getShopeeProductDetail({
+              await fetchShopeeProductDetail({
                 itemid,
                 shopid,
               });
@@ -174,4 +198,4 @@ export async function fetchProductsFromTrends(
   return products;
 }
 
-export const _postProcessInternals = { fetch };
+export const _internals = { fetch };
