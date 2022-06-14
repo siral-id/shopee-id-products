@@ -13,18 +13,26 @@ const octokit = setupOctokit(ghToken);
 const rawJson = Deno.args[0];
 const uniqueKeywords: string[] = JSON.parse(rawJson);
 
-await Promise.all(uniqueKeywords.map(async (uniqueKeyword) => {
-  const response = await fetchProductsFromTrends(uniqueKeyword);
+for (const uniqueKeyword of uniqueKeywords) {
+  let shouldContinueFetch = true;
+  let populateProducts: ICreateProductWithImages[] = [];
 
-  await Promise.all(
-    chunkItems(response).map(async (chunk) =>
-      await uploadWithRetry<ICreateProductWithImages[]>(
-        octokit,
-        chunk,
-        Pipeline.ShopeeProducts,
-      )
-    ),
-  );
-}));
+  while (shouldContinueFetch) {
+    const { products, isThereNextSearch } = await fetchProductsFromTrends(
+      uniqueKeyword,
+    );
+
+    populateProducts = [...populateProducts, ...products];
+    shouldContinueFetch = isThereNextSearch;
+  }
+
+  for (const chunk of chunkItems(populateProducts)) {
+    await uploadWithRetry<ICreateProductWithImages[]>(
+      octokit,
+      chunk,
+      Pipeline.ShopeeProducts,
+    );
+  }
+}
 
 Deno.exit();

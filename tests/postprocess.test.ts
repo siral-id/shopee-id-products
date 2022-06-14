@@ -35,9 +35,21 @@ Deno.test("Make sure fetchDailyProducts is correct", async () => {
     ]),
   );
 
-  const response = await fetchDailyProducts(1);
+  const result = await fetchDailyProducts(1);
 
-  expect(response[0]).to.have.property("externalId");
+  expect(result[0]).to.have.property("externalId");
+  expect(result[0]).to.have.property("name");
+  expect(result[0]).to.have.property("url");
+  expect(result[0]).to.have.property("price");
+  expect(result[0]).to.have.property("ratingAverage");
+  expect(result[0]).to.have.property("ratingCount");
+  expect(result[0]).to.have.property("discount");
+  expect(result[0]).to.have.property("description");
+  expect(result[0]).to.have.property("sold");
+  expect(result[0]).to.have.property("stock");
+  expect(result[0]).to.have.property("view");
+  expect(result[0]).to.have.property("source");
+  expect(result[0]).to.have.property("images");
 
   assertSpyCalls(stubFetch, 2);
 
@@ -56,9 +68,23 @@ Deno.test("Make sure fetchProductsFromTrends is correct", async () => {
     ]),
   );
 
-  const response = await fetchProductsFromTrends("keyword");
+  const { products } = await fetchProductsFromTrends(
+    "keyword",
+  );
 
-  expect(response[0]).to.have.property("externalId");
+  expect(products[0]).to.have.property("externalId");
+  expect(products[0]).to.have.property("name");
+  expect(products[0]).to.have.property("url");
+  expect(products[0]).to.have.property("price");
+  expect(products[0]).to.have.property("ratingAverage");
+  expect(products[0]).to.have.property("ratingCount");
+  expect(products[0]).to.have.property("discount");
+  expect(products[0]).to.have.property("description");
+  expect(products[0]).to.have.property("sold");
+  expect(products[0]).to.have.property("stock");
+  expect(products[0]).to.have.property("view");
+  expect(products[0]).to.have.property("source");
+  expect(products[0]).to.have.property("images");
 
   assertSpyCalls(stubFetch, 2);
 

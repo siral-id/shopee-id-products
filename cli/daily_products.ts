@@ -14,18 +14,16 @@ const octokit = setupOctokit(ghToken);
 const noOfPages = 10;
 const offsets = Array.from(Array(noOfPages).keys());
 
-await Promise.all(offsets.map(async (offset) => {
+for (const offset of offsets) {
   const response = await fetchDailyProducts(offset);
 
-  await Promise.all(
-    chunkItems(response).map(async (chunk) =>
-      await uploadWithRetry<ICreateProductWithImages[]>(
-        octokit,
-        chunk,
-        Pipeline.ShopeeProducts,
-      )
-    ),
-  );
-}));
+  for (const chunk of chunkItems(response)) {
+    await uploadWithRetry<ICreateProductWithImages[]>(
+      octokit,
+      chunk,
+      Pipeline.ShopeeProducts,
+    );
+  }
+}
 
 Deno.exit();
