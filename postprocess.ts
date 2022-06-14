@@ -110,79 +110,74 @@ export async function fetchDailyProducts(
 
 export async function fetchProductsFromTrends(
   keyword: string,
+  offset = 0,
   limit = 60,
-): Promise<ICreateProductWithImages[]> {
-  const products: ICreateProductWithImages[] = [];
-  let isThereNextSearch = true;
-  let offset = 0;
+): Promise<
+  { products: ICreateProductWithImages[]; isThereNextSearch: boolean }
+> {
+  const url =
+    `https://shopee.co.id/api/v4/search/search_items?by=relevancy&keyword=${keyword}&limit=${limit}&newest=${offset}&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
 
-  while (isThereNextSearch != false) {
-    const url =
-      `https://shopee.co.id/api/v4/search/search_items?by=relevancy&keyword=${keyword}&limit=${limit}&newest=${offset}&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2`;
+  const { items, nomore: isThereNextSearch } = await fetchWithRetry<
+    IShopeeSearchResponse
+  >(url);
 
-    const data = await fetchWithRetry<IShopeeSearchResponse>(url);
-    const items = data["items"];
-
-    await Promise.all(
-      items.map(
-        async (
-          {
-            item_basic: {
-              itemid,
-              name,
-              shopid,
-              raw_discount,
-              price,
-              images,
-              item_rating: { rating_star, rating_count },
-              historical_sold,
-              sold,
-              stock,
-            },
-          },
-        ) => {
-          let { data: { description, view_count } } =
-            await fetchShopeeProductDetail({
-              itemid,
-              shopid,
-            });
-
-          if (!description) description = "";
-          if (!view_count) view_count = 0;
-
-          const nameWithDash = name.replace(" ", "-");
-          const url = generateShopeeProductUrl({
-            name: nameWithDash,
-            shopid,
+  const products = await Promise.all(
+    items.map(
+      async (
+        {
+          item_basic: {
             itemid,
-          });
-          const shopeeImages = images.map((image) =>
-            generateShopeeProductImageUrl({ image })
-          );
-
-          products.push({
-            externalId: itemid.toString(),
             name,
-            description,
-            source: Source.SHOPEE,
-            url,
-            discount: raw_discount,
+            shopid,
+            raw_discount,
             price,
-            ratingAverage: rating_star,
-            ratingCount: rating_count[0],
-            images: shopeeImages,
-            sold: historical_sold + sold,
-            view: view_count,
+            images,
+            item_rating: { rating_star, rating_count },
+            historical_sold,
+            sold,
             stock,
-          });
+          },
         },
-      ),
-    );
+      ) => {
+        let { data: { description, view_count } } =
+          await fetchShopeeProductDetail({
+            itemid,
+            shopid,
+          });
 
-    isThereNextSearch = data["nomore"];
-    offset += limit;
-  }
-  return products;
+        if (!description) description = "";
+        if (!view_count) view_count = 0;
+
+        const nameWithDash = name.replace(" ", "-");
+        const url = generateShopeeProductUrl({
+          name: nameWithDash,
+          shopid,
+          itemid,
+        });
+        const shopeeImages = images.map((image) =>
+          generateShopeeProductImageUrl({ image })
+        );
+
+        return {
+          externalId: itemid.toString(),
+          name,
+          description,
+          source: Source.SHOPEE,
+          url,
+          discount: raw_discount,
+          price,
+          ratingAverage: rating_star,
+          ratingCount: rating_count[0],
+          images: shopeeImages,
+          sold: historical_sold + sold,
+          view: view_count,
+          stock,
+        };
+      },
+    ),
+  );
+  return { products, isThereNextSearch };
 }
 
 export const _internals = { fetch };
