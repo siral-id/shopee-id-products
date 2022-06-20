@@ -10,7 +10,7 @@ on:
     - cron: '0 9 * * *'
 
 jobs:
-  daily_products:
+  daily_products_0:
     runs-on: ubuntu-latest
     steps:
       - name: Setup deno
@@ -21,10 +21,188 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Fetch Daily Shopee Products
+      - name: Fetch Daily Shopee Products 0
         run: |
            echo GH_TOKEN=$GH_TOKEN >> .env
            export $(cat .env | xargs)
-           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 0
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN_0 }}
+
+  daily_products_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 1
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 1
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_1 }}
+
+  daily_products_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 2
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 2
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_2 }}
+
+
+  daily_products_3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 3
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 3
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_3 }}
+
+
+  daily_products_4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 4
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 4
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_4 }}
+
+
+  daily_products_5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 5
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 5
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_5 }}
+
+
+  daily_products_6:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 6
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 6
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_6 }}
+
+
+  daily_products_7:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 7
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 7
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_7 }}
+
+
+  daily_products_8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 8
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 8
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_8 }}
+
+  daily_products_9:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.22.x
+
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Fetch Daily Shopee Products 9
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/daily_products.ts 9
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_9 }}
+
