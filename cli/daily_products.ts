@@ -7,12 +7,12 @@ import {
   uploadWithRetry,
 } from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
-const offset = Deno.args[0]
+const offset: string = Deno.args[0]
 const ghToken = Deno.env.get("GH_TOKEN");
 
 const octokit = setupOctokit(ghToken);
 
-const response = await fetchDailyProducts(offset);
+const response = await fetchDailyProducts(Number(offset));
 
 for (const chunk of chunkItems(response)) {
   await uploadWithRetry<ICreateProductWithImages[]>(
