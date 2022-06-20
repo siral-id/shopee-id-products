@@ -12,8 +12,11 @@ concurrency:
   
 jobs:
   build:
+    strategy:
+      matrix:
+        node: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -31,9 +34,9 @@ jobs:
         run: |
            echo GH_TOKEN=$GH_TOKEN >> .env
            export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}'
+            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets[format('GH_TOKEN_{0}', matrix.node)] }}
 
       - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
         name: Close Issue
