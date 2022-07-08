@@ -35,7 +35,7 @@ Deno.test("Make sure fetchDailyProducts is correct", async () => {
 
   const products = await fetchDailyProducts(1);
 
-  assertEquals(products.length, 1)
+  assertEquals(products.length, 1);
 
   assertSpyCalls(stubFetch, 2);
 
@@ -52,11 +52,11 @@ Deno.test("Make sure fetchProductsFromTrends is correct", async () => {
     ]),
   );
 
-  const { products } = await fetchProductsFromTrends(
+  const products = await fetchProductsFromTrends(
     "keyword",
   );
 
-  assertEquals(products.length, 1)
+  assertEquals(products.length, 1);
 
   assertSpyCalls(stubFetch, 2);
 

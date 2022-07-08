@@ -1,40 +1,46 @@
 import { fetchProductsFromTrends } from "../mod.ts";
 import {
   chunkItems,
-  ICreateProductWithImages,
+  createGistWithRetry,
   Pipeline,
   setupOctokit,
   uploadWithRetry,
 } from "https://raw.githubusercontent.com/siral-id/core/main/mod.ts";
 
 const ghToken = Deno.env.get("GH_TOKEN");
+
+const rawData = Deno.args[0];
+const uniqueKeywords: string[] = JSON.parse(rawData);
+if (!uniqueKeywords) throw new Error("missing keywords arguments");
+
+const index = Number(Deno.args[1]);
+if (index === undefined && index === null) {
+  throw new Error("missing page index");
+}
+
 const octokit = setupOctokit(ghToken);
 
-const rawJson = Deno.args[0];
-const uniqueKeywords: string[] = JSON.parse(rawJson);
+const products = await fetchProductsFromTrends(
+  uniqueKeywords[index],
+);
 
-const index: string = Deno.args[1];
+const maxGistSize = 1048576;
+const chunks = chunkItems(products, maxGistSize);
 
-const uniqueKeyword = uniqueKeywords[Number(index)]
+const gists = await Promise.all(
+  chunks.map(async (chunk) => {
+    const { data: { id } } = await createGistWithRetry<string>(
+      octokit,
+      JSON.stringify(chunk),
+    );
+    return id;
+  }),
+);
 
-let shouldContinueFetch = true;
-let populateProducts: ICreateProductWithImages[] = [];
-
-while (shouldContinueFetch) {
-  const { products, isThereNextSearch } = await fetchProductsFromTrends(
-    uniqueKeyword,
-  );
-
-  populateProducts = [...populateProducts, ...products];
-  shouldContinueFetch = isThereNextSearch;
-}
-
-for (const chunk of chunkItems(populateProducts)) {
-  await uploadWithRetry<ICreateProductWithImages[]>(
-    octokit,
-    chunk,
-    Pipeline.ShopeeProducts,
-  );
-}
+await uploadWithRetry<string>(
+  octokit,
+  JSON.stringify(gists),
+  Pipeline.ShopeeProducts,
+);
 
 Deno.exit();
