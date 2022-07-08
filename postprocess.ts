@@ -19,7 +19,10 @@ const fetchWithRetry = async <T>(
   maxRetry = 60,
   lastError?: string,
 ): Promise<T> => {
-  if (retryCount > maxRetry) throw new Error(lastError);
+  console.log(`current retry: ${retryCount} & max retry: ${maxRetry}`);
+
+  if (retryCount === maxRetry) throw new Error(lastError);
+
   try {
     const response = await _internals.fetch(
       url,
@@ -29,7 +32,7 @@ const fetchWithRetry = async <T>(
   } catch (error) {
     console.error(error);
     await sleep(retryCount);
-    return fetchWithRetry(url, requestOptions, retryCount + 1, error);
+    return await fetchWithRetry(url, requestOptions, retryCount + 1, error);
   }
 };
 
