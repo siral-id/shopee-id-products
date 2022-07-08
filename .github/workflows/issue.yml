@@ -7,8 +7,35 @@ on:
   workflow_dispatch:
   
 jobs:
-  trending_product_0:
+  trending_products:
+    strategy:
+      max-parallel: 2
+      matrix:
+        index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        include:
+          - index: 0
+            GH_TOKEN: ${{ secrets.GH_TOKEN_0 }}
+          - index: 1
+            GH_TOKEN: ${{ secrets.GH_TOKEN_1 }}
+          - index: 2
+            GH_TOKEN: ${{ secrets.GH_TOKEN_2 }}
+          - index: 3
+            GH_TOKEN: ${{ secrets.GH_TOKEN_3 }}
+          - index: 4
+            GH_TOKEN: ${{ secrets.GH_TOKEN_4 }}
+          - index: 5
+            GH_TOKEN: ${{ secrets.GH_TOKEN_5 }}
+          - index: 6
+            GH_TOKEN: ${{ secrets.GH_TOKEN_6 }}
+          - index: 7
+            GH_TOKEN: ${{ secrets.GH_TOKEN_7 }}
+          - index: 8
+            GH_TOKEN: ${{ secrets.GH_TOKEN_8 }}
+          - index: 9
+            GH_TOKEN: ${{ secrets.GH_TOKEN_9 }}
+
     runs-on: ubuntu-latest
+    
     steps:
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -26,279 +53,9 @@ jobs:
         run: |
            echo GH_TOKEN=$GH_TOKEN >> .env
            export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.index}}'
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_0 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_1 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_2 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_3:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_3 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_4:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_4 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_5:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_5 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_6:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_6 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_7:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_7 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_8:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_8 }}
-
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: Close Issue
-        uses: peter-evans/close-issue@v2
-        with:
-          comment: |
-            Trending Product data successfully populated and forwarded backs. Closing issue...
-
-  trending_product_9:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup deno
-        uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-          
-      - name: Check out repo
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-        
-      - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
-        name: populate trending products
-        run: |
-           echo GH_TOKEN=$GH_TOKEN >> .env
-           export $(cat .env | xargs)
-            deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/trending_products.ts '${{ github.event.issue.body }}' '${{matrix.node}}'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_9 }}
+          GH_TOKEN: ${{ secrets[matrix.GH_TOKEN] }}
 
       - if: startsWith(github.event.issue.title, 'FORWARD_TREND') == true
         name: Close Issue
