@@ -14,25 +14,25 @@ jobs:
         index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         include:
           - index: 0
-            GH_TOKEN: ${{ secrets.GH_TOKEN_0 }}
+            GH_TOKEN: GH_TOKEN_0
           - index: 1
-            GH_TOKEN: ${{ secrets.GH_TOKEN_1 }}
+            GH_TOKEN: GH_TOKEN_1
           - index: 2
-            GH_TOKEN: ${{ secrets.GH_TOKEN_2 }}
+            GH_TOKEN: GH_TOKEN_2
           - index: 3
-            GH_TOKEN: ${{ secrets.GH_TOKEN_3 }}
+            GH_TOKEN: GH_TOKEN_3
           - index: 4
-            GH_TOKEN: ${{ secrets.GH_TOKEN_4 }}
+            GH_TOKEN: GH_TOKEN_4
           - index: 5
-            GH_TOKEN: ${{ secrets.GH_TOKEN_5 }}
+            GH_TOKEN: GH_TOKEN_5
           - index: 6
-            GH_TOKEN: ${{ secrets.GH_TOKEN_6 }}
+            GH_TOKEN: GH_TOKEN_6
           - index: 7
-            GH_TOKEN: ${{ secrets.GH_TOKEN_7 }}
+            GH_TOKEN: GH_TOKEN_7
           - index: 8
-            GH_TOKEN: ${{ secrets.GH_TOKEN_8 }}
+            GH_TOKEN: GH_TOKEN_8
           - index: 9
-            GH_TOKEN: ${{ secrets.GH_TOKEN_9 }}
+            GH_TOKEN: GH_TOKEN_9
 
     runs-on: ubuntu-latest
     
